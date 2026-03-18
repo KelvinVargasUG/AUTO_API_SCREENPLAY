@@ -1,0 +1,21 @@
+change: automatizacion-crud-api
+status: tasks-complete
+stack: Serenity BDD 4.2.9 + Screenplay REST + Cucumber 7.18.1 + REST Assured 5.4.0 + Jackson 2.17.2
+
+artifacts:
+  explore:  changes/automatizacion-crud-api/explore.md
+  proposal: changes/automatizacion-crud-api/proposal.md
+  spec:     changes/automatizacion-crud-api/spec.md
+  design:   changes/automatizacion-crud-api/design.md
+  tasks:    changes/automatizacion-crud-api/tasks.md
+
+engram_ids:
+  explore:  19
+  proposal: 20
+  spec:     21
+  design:   22
+  tasks:    23
+
+next: sdd-apply
+created: 2026-03-18
+updated: 2026-03-18

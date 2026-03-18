@@ -4,7 +4,22 @@
 [versions]
 guava = "32.1.2-jre"
 junit = "4.13.2"
+serenity = "4.2.9"
+cucumber = "7.18.1"
+restAssured = "5.4.0"
+jackson = "2.17.2"
+lombok = "1.18.34"
+assertj = "3.27.7"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit = { module = "junit:junit", version.ref = "junit" }
+serenityCore = { module = "net.serenity-bdd:serenity-core", version.ref = "serenity" }
+serenityCucumber = { module = "net.serenity-bdd:serenity-cucumber", version.ref = "serenity" }
+serenityRestAssured = { module = "net.serenity-bdd:serenity-rest-assured", version.ref = "serenity" }
+cucumberJava = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
+cucumberJunit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
+restAssured = { module = "io.rest-assured:rest-assured", version.ref = "restAssured" }
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertj" }
