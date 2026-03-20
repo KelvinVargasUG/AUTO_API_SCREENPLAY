@@ -1,8 +1,3 @@
-/*
- * Serenity BDD 4.x + Screenplay REST + Cucumber 7 + REST Assured 5
- * Migrated from the Gradle 'init' application skeleton.
- */
-
 buildscript {
     repositories {
         mavenCentral()
@@ -14,6 +9,7 @@ buildscript {
 
 plugins {
     id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '5.3.7'
 }
 
 repositories {
@@ -51,27 +47,37 @@ java {
 
 gradle.startParameter.continueOnFailure = true
 
+// test {
+//     useJUnit()
+//     testLogging {
+//         events 'passed', 'skipped', 'failed'
+//         showStandardStreams = true
+//     }
+//     systemProperty 'cucumber.filter.tags', System.getProperty('cucumber.filter.tags', '')
+//     finalizedBy 'aggregate'
+// }
+
+// task aggregate(group: 'Serenity', description: 'Generate Serenity aggregate reports') {
+//     mustRunAfter test
+//     doLast {
+//         def serenityOutputDir = new File("${project.projectDir}/target/site/serenity")
+//         if (!serenityOutputDir.exists()) {
+//             serenityOutputDir.mkdirs()
+//         }
+//         def reporter = new net.thucydides.core.reports.html.HtmlAggregateStoryReporter('AUTO_API_SCREENPLAY')
+//         reporter.setSourceDirectory(serenityOutputDir)
+//         reporter.setOutputDirectory(serenityOutputDir)
+//         reporter.generateReportsForTestResultsFrom(serenityOutputDir)
+//         logger.lifecycle("Serenity report generated: ${serenityOutputDir}/index.html")
+//     }
+// }
+
 test {
     useJUnit()
-    testLogging {
-        events 'passed', 'skipped', 'failed'
-        showStandardStreams = true
-    }
-    systemProperty 'cucumber.filter.tags', System.getProperty('cucumber.filter.tags', '')
-    finalizedBy 'aggregate'
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+    systemProperty "environment", "default"
+    finalizedBy aggregate
 }
 
-task aggregate(group: 'Serenity', description: 'Generate Serenity aggregate reports') {
-    mustRunAfter test
-    doLast {
-        def serenityOutputDir = new File("${project.projectDir}/target/site/serenity")
-        if (!serenityOutputDir.exists()) {
-            serenityOutputDir.mkdirs()
-        }
-        def reporter = new net.thucydides.core.reports.html.HtmlAggregateStoryReporter('AUTO_API_SCREENPLAY')
-        reporter.setSourceDirectory(serenityOutputDir)
-        reporter.setOutputDirectory(serenityOutputDir)
-        reporter.generateReportsForTestResultsFrom(serenityOutputDir)
-        logger.lifecycle("Serenity report generated: ${serenityOutputDir}/index.html")
-    }
-}
+gradle.startParameter.continueOnFailure = true

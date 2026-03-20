@@ -13,6 +13,9 @@ Stack: **Serenity BDD 4.x · Screenplay · Serenity Rest · Cucumber 7 · REST A
 | Gradle | 8.x (wrapper incluido) |
 | Servidor bajo prueba | corriendo en `http://localhost:8080` |
 
+- [FoodTech-Kitchen-Services](https://github.com/KelvinVargasUG/FoodTech-Kitchen-Services/tree/main)
+- Ejecutar Script inicial [seed_data.sh](scripts/seed_data.sh)
+
 > El wrapper `gradlew` descarga Gradle automáticamente; no es necesario instalarlo manualmente.
 
 ---
