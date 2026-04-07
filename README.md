@@ -1,99 +1,62 @@
 # AUTO_API_SCREENPLAY
 
-Automatización de API REST para el ciclo de vida completo de una orden de restaurante.  
-Stack: **Serenity BDD 4.x · Screenplay · Serenity Rest · Cucumber 7 · REST Assured 5 · Gradle · Java 17**
+## Descripción
 
----
+Proyecto de automatización de pruebas a nivel de **API REST** sobre el backend **FoodTech-Kitchen-Services**. Valida los contratos del servicio enviando peticiones HTTP directamente a los endpoints, sin interactuar con la interfaz gráfica. Utiliza el patrón **Screenplay** adaptado para APIs.
 
-## Prerrequisitos
+## Enfoque de prueba
 
-| Herramienta | Versión mínima |
-|---|---|
-| Java (JDK) | 17 |
-| Gradle | 8.x (wrapper incluido) |
-| Servidor bajo prueba | corriendo en `http://localhost:8080` |
+A diferencia de los proyectos de automatización de frontend, este proyecto prueba el backend directamente mediante llamadas HTTP. Esto permite validar que los endpoints responden correctamente en términos de códigos de estado, estructura de respuesta y reglas de negocio, independientemente de la interfaz gráfica.
 
-- [FoodTech-Kitchen-Services](https://github.com/KelvinVargasUG/FoodTech-Kitchen-Services/tree/main)
-- Ejecutar Script inicial [seed_data.sh](scripts/seed_data.sh)
+## Escenarios cubiertos
 
-> El wrapper `gradlew` descarga Gradle automáticamente; no es necesario instalarlo manualmente.
-
----
-
-## Ejecutar los tests
-
-```bash
-./gradlew clean :app:test
-```
-
-Para ejecutar sólo los escenarios happy-path:
-
-```bash
-./gradlew clean :app:test -Dcucumber.filter.tags="@happy-path"
-```
-
-Para ejecutar sólo los escenarios negativos:
-
-```bash
-./gradlew clean :app:test -Dcucumber.filter.tags="@negative"
-```
-
----
-
-## Ver el reporte Serenity
-
-Abrir en el navegador:
-
-```
-app/target/site/serenity/index.html
-```
-
-El reporte HTML de Cucumber también se genera en:
-
-```
-app/target/cucumber-reports/cucumber.html
-```
-
----
-
-## Estructura del proyecto
-
-```
-app/src/test/
-├── java/com/automation/
-│   ├── tasks/              # Tareas Screenplay (acciones del actor)
-│   │   ├── RegisterUser.java
-│   │   ├── LoginUser.java
-│   │   ├── AttemptLoginWith.java
-│   │   ├── CreateOrder.java
-│   │   ├── DeleteOrder.java
-│   │   └── StartTask.java
-│   ├── questions/          # Preguntas Screenplay (observaciones del sistema)
-│   │   ├── TasksAtStation.java
-│   │   └── OrderStatus.java
-│   ├── models/             # POJOs de request/response
-│   ├── utils/              # Constantes y builder de RequestSpecification
-│   ├── runners/            # CucumberRunner
-│   └── stepdefinitions/   # Bindings Gherkin → Screenplay
-└── resources/
-    ├── features/
-    │   └── crud_flow.feature
-    ├── serenity.conf
-    └── cucumber.properties
-```
-
----
-
-## Flujo CRUD automatizado
-
-| Paso | Verbo HTTP | Endpoint |
+| Feature | Escenarios | Tipo |
 |---|---|---|
-| Registrar usuario | `POST` | `/api/auth/register` |
-| Autenticar usuario | `POST` | `/api/auth/login` |
-| Crear orden | `POST` | `/api/orders` |
-| Consultar tareas por estación | `GET` | `/api/tasks/station/{station}?status=PENDING` |
-| Iniciar preparación de tarea | `PATCH` | `/api/tasks/{taskId}/start` |
-| Eliminar orden | `DELETE` | `/api/orders/{orderId}` |
-| Consultar estado de orden | `GET` | `/api/orders/{orderId}/status` |
+| **Ciclo de vida de una orden** | Crear y eliminar orden; Iniciar preparación de tarea; Login fallido con credenciales incorrectas; Consultar orden inexistente (404); Eliminar orden inexistente (404) | Positivo / Negativo |
+| **Gestión del catálogo vía API** | Crear producto (201); Listar productos (200); Actualizar producto (200); Desactivar producto (200); Crear producto con nombre vacío (4xx); Producto activo en listado; Actualizar producto inexistente (404); Producto desactivado no en catálogo activo | Positivo / Negativo |
+| **Carga masiva vía API** | Iniciar sesión de carga (201); Flujo completo init-upload-complete (202); Descargar plantilla CSV (200); Rechazo chunk por tamaño excedido (413); Rechazo CSV con cabeceras incorrectas; Reporte de errores disponible (200); Productos cargados en catálogo | Positivo / Negativo |
+
+**Total: 20 escenarios**
+
+## Flujo principal automatizado
+
+| Paso | Acción |
+|---|---|
+| 1 | Registrar usuario |
+| 2 | Autenticar usuario |
+| 3 | Crear orden con productos |
+| 4 | Consultar tareas por estación |
+| 5 | Iniciar preparación de tarea |
+| 6 | Eliminar orden |
+| 7 | Consultar estado de orden eliminada |
+
+## Relación con los otros proyectos
+
+Este proyecto es el **complemento a nivel de API** de los dos proyectos de automatización de frontend (AUTO_FRONT_SCREENPLAY y AUTO_FRONT_POM_FACTORY). Juntos proporcionan cobertura en múltiples capas: los proyectos de frontend validan la experiencia del usuario desde el navegador, y este valida que el backend cumple sus contratos.
+
+## Requisitos previos
+
+- Java 17 o superior
+- FoodTech-Kitchen-Services corriendo en `http://localhost:8080`
+- Ejecutar el script de datos iniciales: [seed_data.sh](scripts/seed_data.sh)
+
+## Comandos disponibles
+
+```bash
+./gradlew clean :app:test                                          # Ejecutar todos los tests
+./gradlew clean :app:test -Dcucumber.filter.tags="@happy-path"     # Solo escenarios happy-path
+./gradlew clean :app:test -Dcucumber.filter.tags="@negative"       # Solo escenarios negativos
+```
+
+## Reportes
+
+Los reportes se generan en:
+
+```
+app/target/site/serenity/index.html          # Reporte Serenity
+app/target/cucumber-reports/cucumber.html    # Reporte Cucumber
+```
 
 ---
+
+Proyecto académico — Sofka Technologies — 2026
